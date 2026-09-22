@@ -20,6 +20,19 @@ function Subpage({ page, assetBase }: { page: SitePage; assetBase: string }) {
   if (!group) throw new Error(`Unknown page: ${page.id}`);
   return (
     <main id="main">
+      <nav className="section-nav" aria-label={`${group.label} 하위 메뉴`}>
+        <div className="shell">
+          {group.pages.map((item) => (
+            <a
+              key={item.id}
+              href={`./${item.file}`}
+              aria-current={item.id === page.id ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </nav>
       <section className="page-hero">
         <div className="shell relative z-10">
           <nav aria-label="현재 위치" className="breadcrumb">
@@ -37,19 +50,6 @@ function Subpage({ page, assetBase }: { page: SitePage; assetBase: string }) {
           FLC.
         </span>
       </section>
-      <nav className="section-nav" aria-label={`${group.label} 하위 메뉴`}>
-        <div className="shell">
-          {group.pages.map((item) => (
-            <a
-              key={item.id}
-              href={`./${item.file}`}
-              aria-current={item.id === page.id ? "page" : undefined}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-      </nav>
       <section className="section page-content">
         <div className="shell">
           <PageContent page={page} assetBase={assetBase} />
