@@ -6,6 +6,7 @@ test("Vite serves current React HTML and hydrates in development", async ({
   page,
   request,
 }) => {
+  await page.route("https://fonts.googleapis.com/**", (route) => route.abort());
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
@@ -57,5 +58,25 @@ test("Vite serves current React HTML and hydrates in development", async ({
   await expect(
     nav.getByRole("link", { name: "오시는길", exact: true }),
   ).toBeHidden();
+  for (const file of [
+    "en/index.html",
+    "en/product-zsd-1.html",
+    "en/support-contact.html?product=zsd-1",
+  ]) {
+    await page.goto(file);
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await expect(page.locator("html")).toHaveClass("js");
+    expect(await page.locator("main").innerText()).not.toMatch(/[가-힣]/);
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  }
+  await expect(
+    page.getByRole("combobox", { name: "Product of interest", exact: true }),
+  ).toHaveValue("zsd-1");
+  await page
+    .locator(".language-switch")
+    .getByRole("link", { name: "한국어로 보기" })
+    .click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "ko");
   expect(errors).toEqual([]);
 });

@@ -1,23 +1,24 @@
-import { renderDocument, escapeAttribute } from "./render";
-import { copyFile, writeFile } from "node:fs/promises";
-import { pages } from "../src/navigation";
+﻿import { renderDocument, escapeAttribute } from "./render";
+import { copyFile, writeFile, mkdir } from "node:fs/promises";
+import { routes } from "../src/navigation";
 import { company } from "../src/company";
-
 const root = new URL("../", import.meta.url);
 const initialYear = new Date().getFullYear();
-
-// Keep the original logo untouched and use one stable public URL in HTML and React.
 await copyFile(new URL("FLC.png", root), new URL("public/flc-logo.png", root));
-
-for (const page of pages) {
-  const html = renderDocument(page, initialYear);
-  await writeFile(new URL(page.file, root), html, "utf8");
+await mkdir(new URL("en/", root), { recursive: true });
+for (const { page, locale, file } of routes) {
+  const html = renderDocument(
+    page,
+    initialYear,
+    locale === "en" ? "../" : "./",
+    locale,
+  );
+  await writeFile(new URL(file, root), html, "utf8");
 }
-
-const urls = pages
+const urls = routes
   .map(
-    (page) =>
-      `<url><loc>${escapeAttribute(company.siteUrl)}/${page.id === "home" ? "" : page.file}</loc></url>`,
+    ({ file }) =>
+      `<url><loc>${escapeAttribute(company.siteUrl)}/${file.replace(/(^|\/)index\.html$/, "$1")}</loc></url>`,
   )
   .join("\n  ");
 await writeFile(
@@ -25,4 +26,4 @@ await writeFile(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  ${urls}\n</urlset>\n`,
   "utf8",
 );
-console.log(`Pre-rendered ${pages.length} React pages.`);
+console.log(`Pre-rendered ${routes.length} Korean and English React pages.`);

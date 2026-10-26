@@ -1,16 +1,15 @@
-import { useRef, useState } from "react";
-import { company } from "../company";
+﻿import { useRef, useState } from "react";
+import { useLocale } from "../LocaleContext";
 import { arrow } from "./icons";
 import { field, telephone } from "./content";
-
 export function AddressCopy() {
+  const { t, company } = useLocale();
   const addressRef = useRef<HTMLSpanElement>(null);
   const [status, setStatus] = useState("");
-
   async function copyAddress() {
     try {
       await navigator.clipboard.writeText(company.address);
-      setStatus("주소를 복사했습니다.");
+      setStatus(t("주소를 복사했습니다."));
     } catch {
       if (addressRef.current) {
         const range = document.createRange();
@@ -19,10 +18,9 @@ export function AddressCopy() {
         selection?.removeAllRanges();
         selection?.addRange(range);
       }
-      setStatus("주소를 선택했습니다. 복사 기능을 이용해 주세요.");
+      setStatus(t("주소를 선택했습니다. 복사 기능을 이용해 주세요."));
     }
   }
-
   return (
     <>
       <dl className="info-list mt-7">
@@ -40,7 +38,8 @@ export function AddressCopy() {
         data-copy-address=""
         onClick={copyAddress}
       >
-        주소 복사 {arrow}
+        {t("주소 복사")}
+        {arrow}
       </button>
       <p
         id="copy-status"

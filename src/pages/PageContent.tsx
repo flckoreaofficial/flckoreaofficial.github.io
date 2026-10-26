@@ -1,78 +1,72 @@
-import { Fragment } from "react";
-import type { ReactNode } from "react";
-import { company, sources } from "../company";
+﻿import { useLocale } from "../LocaleContext";
 import type { SitePage } from "../navigation";
-import { pin, chip } from "../components/icons";
-import { AddressCopy } from "../components/AddressCopy";
+import { sourceDate } from "../products";
 import {
-  marker,
-  link,
-  external,
-  field,
-  telephone,
-  email,
-} from "../components/content";
-
-function history(): ReactNode {
+  milestones,
+  capabilities,
+  technologies,
+  developmentSteps,
+} from "../companyContent";
+import { pin } from "../components/icons";
+import { AddressCopy } from "../components/AddressCopy";
+import { link, external, field, telephone, email } from "../components/content";
+import { ProductCatalog, ProductDetail } from "./Products";
+import { ContactPage } from "./ContactPage";
+function History() {
+  const { t } = useLocale();
   return (
     <>
       <ol className="timeline">
-        <li>
-          <span className="timeline-year">
-            2020<small>07</small>
-          </span>
-          <div>
-            <h2>주식회사 에프엘씨 설립</h2>
-            <p>
-              SK하이닉스 사내벤처에서 출발해 반도체 후공정 장비·부품 개발에
-              도전했습니다.
-            </p>
-          </div>
-        </li>
-        <li>
-          <span className="timeline-year">
-            2024<small>01</small>
-          </span>
-          <div>
-            <h2>반도체 공정 부품 연구개발</h2>
-            <p>
-              반도체 제조공정용 흡착패드 및 탈부착방법 관련 특허를 출원했습니다.
-            </p>
-          </div>
-        </li>
-        <li>
-          <span className="timeline-year">
-            2025<small>08</small>
-          </span>
-          <div>
-            <h2>공정 부품 기술 특허 등록</h2>
-            <p>흡착패드 및 탈부착방법 특허 등록 · 등록번호 10-2849314</p>
-            {external(sources.patent, "관련 특허 보기")}
-          </div>
-        </li>
-        <li>
-          <span className="timeline-year">NEXT</span>
-          <div>
-            <h2>추가 연혁</h2>
-            <p>{marker("연도 · 주요 성과 · 상세 내용")}</p>
-          </div>
-        </li>
+        {milestones.map(([year, title, desc]) => (
+          <li key={year}>
+            <span className="timeline-year">{year}</span>
+            <div>
+              <h2>{t(title)}</h2>
+              <p>{t(desc)}</p>
+            </div>
+          </li>
+        ))}
       </ol>
+      <p className="source-note">
+        {sourceDate} ·{" "}
+        {t(
+          "소개자료의 과거 이력입니다. 인증 이력이 현재 유효한 인증을 의미하지는 않습니다.",
+        )}
+      </p>
+      <a href="./technology-research.html" className="text-link mt-6">
+        {t("진행 중인 개발과 로드맵 보기 ↗")}
+      </a>
     </>
   );
 }
-
-function location(): ReactNode {
+function Capabilities() {
+  const { t } = useLocale();
+  return (
+    <div className="grid gap-5 md:grid-cols-2">
+      {capabilities.map(([title, desc], i) => (
+        <article className="info-card" key={title}>
+          <span className="eyebrow">CAPABILITY 0{i + 1}</span>
+          <h2 className="mt-5">{t(title)}</h2>
+          <p>{t(desc)}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+function Location() {
+  const { t } = useLocale();
   const query = encodeURIComponent("충남 천안시 서북구 직산읍 금곡로 74-10");
   return (
     <>
       <div className="grid gap-8 lg:grid-cols-[1.05fr_1fr]">
         <div className="location-panel">
-          <div className="location-pattern" aria-hidden="true"></div>
+          <div className="location-pattern" aria-hidden="true" />
           <div className="location-pin">{pin}</div>
           <p className="eyebrow text-brand">CHEONAN, KOREA</p>
-          <h2>주식회사 에프엘씨</h2>
-          <p className="mt-3 text-sm text-slate-500">직산읍 금곡로 74-10</p>
+          <h2>{t("주식회사 에프엘씨")}</h2>
+          <p className="mt-3 text-sm text-slate-500">
+            {t("직산읍 금곡로 74-10")}
+          </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             {external(
               `https://map.naver.com/p/search/${query}`,
@@ -86,473 +80,428 @@ function location(): ReactNode {
             )}
           </div>
           <p className="mt-5 text-xs text-slate-500">
-            지도 서비스에서 실제 위치와 경로를 확인하세요.
+            {t("지도 서비스에서 실제 위치와 경로를 확인하세요.")}
           </p>
         </div>
         <div className="self-center">
           <p className="eyebrow">VISIT FLC</p>
           <h2 className="mt-5 text-2xl font-semibold">
-            에프엘씨를 찾아오시는 길
+            {t("에프엘씨를 찾아오시는 길")}
           </h2>
           <AddressCopy />
-        </div>
-      </div>
-      <div className="mt-12 grid gap-5 md:grid-cols-2">
-        <article className="info-card">
-          <h2>대중교통 안내</h2>
-          <p>{marker("가까운 역 · 버스 정류장 · 도보 경로")}</p>
-        </article>
-        <article className="info-card">
-          <h2>차량 방문 안내</h2>
-          <p>{marker("차량 진입 경로 · 주차장 · 방문 절차")}</p>
-        </article>
-      </div>
-    </>
-  );
-}
-
-function product(page: SitePage): ReactNode {
-  const number = page.id.slice(-1);
-  return (
-    <>
-      <div className="grid items-start gap-10 lg:grid-cols-2">
-        <div className="product-detail-visual">
-          <span className="product-number">0{number}</span>
-          {chip}
-          <p>{marker("실제 제품 이미지")}</p>
-        </div>
-        <div>
-          <p className="eyebrow">PRODUCT 0{number}</p>
-          <h2 className="mt-5 text-3xl font-semibold">{page.label}</h2>
-          <div className="mt-5">{marker("공식 제품명 · 모델명")}</div>
-          <p className="mt-7 text-sm leading-8">
-            {marker("제품 개요 · 적용 공정 · 주요 용도")}
-          </p>
-          <dl className="info-list mt-8">
-            {field("적용 분야", marker("적용 공정 및 대상"))}
-            {field("제품 특장점", marker("핵심 기능 및 장점"))}
-            {field("관련 자료", marker("카탈로그 · 사양서 파일"))}
+          <dl className="info-list mt-7">
+            {field("대표 전화", telephone())}
+            {field("이메일", email())}
           </dl>
-          {link("support-contact.html", "제품 문의 안내", "btn-outline mt-7")}
         </div>
       </div>
-      <div className="mt-14">
-        <h2 className="content-title">제품 사양</h2>
-        <dl className="info-list">
-          {field("사양 항목 1", marker("항목명 · 수치 · 단위"))}
-          {field("사양 항목 2", marker("항목명 · 수치 · 단위"))}
-          {field("사양 항목 3", marker("항목명 · 수치 · 단위"))}
-        </dl>
-      </div>
+      <article className="info-card mt-10">
+        <h2>{t("방문 안내")}</h2>
+        <p>
+          {t(
+            "장비·부품 상담이나 방문을 계획하고 계시면 대표 전화 또는 이메일로 방문 일정과 상담 내용을 먼저 알려주세요. 교통편과 차량 진입·주차 안내는 방문 상담 시 확인해 주세요.",
+          )}
+        </p>
+      </article>
     </>
   );
 }
-
-function documentList(kind: "technical" | "downloads"): ReactNode {
+function Development() {
+  const { t } = useLocale();
   return (
     <>
-      <div className="mb-8 flex items-end justify-between gap-5">
-        <div>
-          <p className="eyebrow">
-            {kind === "technical" ? "TECHNICAL LIBRARY" : "FLC DOWNLOAD CENTER"}
-          </p>
-          <h2 className="content-title mt-3">
-            {kind === "technical" ? "기술 관련 자료" : "회사 · 제품 자료"}
-          </h2>
-        </div>
-        <span className="text-xs text-slate-500">자료 안내</span>
-      </div>
-      <div className="document-list">
-        {(kind === "technical"
-          ? ["기술 소개서", "공정 기술자료"]
-          : ["회사소개서", "제품 카탈로그", "인증 및 기타 자료"]
-        ).map((title, index) => (
-          <Fragment key={title}>
-            <article className="document-row">
-              <span className="document-index">0{index + 1}</span>
-              <div>
-                <h3>{title}</h3>
-                <p>{marker("자료 제목 · 파일 · 등록일")}</p>
-              </div>
-              <span className="document-status">파일 등록 예정</span>
-            </article>
-          </Fragment>
+      <h2 className="content-title">{t("맞춤형 개발 절차")}</h2>
+      <p className="intro-copy">
+        {t(
+          "장비 환경과 목표 조건을 먼저 이해하고, 설계·샘플 평가를 거쳐 적용 사양을 구체화합니다. 제품 특성에 따라 검토 범위와 절차를 조정합니다.",
+        )}
+      </p>
+      <ol className="development-steps">
+        {developmentSteps.map(([title, desc], i) => (
+          <li key={title}>
+            <span>0{i + 1}</span>
+            <h3>{t(title)}</h3>
+            <p>{t(desc)}</p>
+          </li>
         ))}
+      </ol>
+      <section className="detail-section">
+        <h2 className="content-title">{t("공정 개선 검토 사례")}</h2>
+        <div className="grid gap-5 md:grid-cols-2">
+          {[
+            [
+              "HBM Thin Die 픽업",
+              "Bump 표면과 픽업 조건에 맞는 칩 분리 구조가 필요합니다.",
+              "Ejector·M-Collet 설계 검토",
+              "자료에 개발 및 양산 적용 이력이 제시되어 있습니다.",
+            ],
+            [
+              "Eject Hood 구조 개선",
+              "일체형 Hood의 교체 범위와 장비별 부품 차이를 검토합니다.",
+              "분리형 Hood와 공용 Body 적용",
+              "교체 부품을 줄이는 구조를 적용합니다. 개선 정도는 장비 조건별 평가가 필요합니다.",
+            ],
+            [
+              "Wafer Chuck Table",
+              "웨이퍼 면내 두께 편차와 지지 구조를 검토합니다.",
+              "척 구조·접착 방식 및 체결·급수 조건 검토",
+              "자료에 시험 결과가 제시되어 있으며, 실제 조건에서 TTV를 평가합니다.",
+            ],
+            [
+              "Saw Kit 맞춤 제작",
+              "신규 패키지의 규격과 배열에 맞는 제품 전환이 필요합니다.",
+              "Picker·Chuck Table 등 Kit 설계",
+              "자료 기준 맞춤형 Kit의 양산 적용 이력이 있습니다.",
+            ],
+          ].map(([title, problem, solution, result]) => (
+            <article className="info-card case-card" key={title}>
+              <h3>{t(title)}</h3>
+              <dl>
+                <dt>{t("공정 요구")}</dt>
+                <dd>{t(problem)}</dd>
+                <dt>{t("적용 방향")}</dt>
+                <dd>{t(solution)}</dd>
+                <dt>{t("적용·평가")}</dt>
+                <dd>{t(result)}</dd>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="detail-section">
+        <p className="eyebrow">DEVELOPMENT ROADMAP</p>
+        <h2 className="content-title mt-4">
+          {t("첨단 패키징을 향한 개발 방향")}
+        </h2>
+        <p className="spec-note">
+          {t("기준일")} {sourceDate}
+          {t(
+            ". 아래 일정은 소개자료의 개발 목표이며 완료 실적 또는 공급 확약이 아닙니다.",
+          )}
+        </p>
+        <div className="roadmap">
+          {[
+            [
+              "2026년 4분기 목표",
+              "HBM TC Bonder · Interconnection",
+              "HBM 적층용 TC Bonding과 Impulse Printing Interconnection Module 개발",
+            ],
+            [
+              "2027년 2분기 목표",
+              "Saw 자동화 옵션",
+              "AI Vision 및 OHT·AMR 물류 자동화 대응 개발",
+            ],
+            [
+              "2027년 3분기 목표",
+              "2.5D·FO-WLP Bonder",
+              "MCPD-1의 다양한 칩·기판 및 고정밀 본딩 구성 개발",
+            ],
+            [
+              "중장기 개발 방향",
+              "Hybrid Bonding · 검사·세정",
+              "Hybrid Bonder, Wafer·Bump 검사, Laser·CO₂ 세정과 Interconnection 기술 검토",
+            ],
+          ].map(([time, title, desc]) => (
+            <article key={title}>
+              <span>{t(time)}</span>
+              <h3>{t(title)}</h3>
+              <p>{t(desc)}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      {link("support-contact.html", "맞춤형 개발 문의")}
+    </>
+  );
+}
+function Resources({
+  assetBase,
+  technical = false,
+}: {
+  assetBase: string;
+  technical?: boolean;
+}) {
+  const { t, locale } = useLocale();
+  return (
+    <>
+      <p className="intro-copy">
+        {t(
+          technical
+            ? "적용 장비와 공정 조건에 따른 제품 선정 기준을 확인하세요. 상세 도면과 평가 자료는 제품별 기술 상담으로 안내합니다."
+            : "회사 개요와 11개 제품의 특징, 개발·공급 상태를 정리한 안내서를 제공합니다.",
+        )}
+      </p>
+      <a
+        className="document-row mt-8"
+        href={`${assetBase}downloads/flc-product-guide${locale === "en" ? "-en" : ""}.pdf`}
+        download
+      >
+        <span className="file-icon">PDF</span>
+        <div>
+          <h2>{t("FLC 회사·제품 안내서")}</h2>
+          <p>
+            {t("전체 제품 · 한국어 · 개정 2026.10.26 · 제품 정보 기준")}{" "}
+            {sourceDate}
+          </p>
+        </div>
+        <span className="document-status">{t("다운로드 ↓")}</span>
+      </a>
+      <a
+        className="document-row"
+        href={`${assetBase}downloads/flc-selection-guide${locale === "en" ? "-en" : ""}.txt`}
+        download
+      >
+        <span className="file-icon">TXT</span>
+        <div>
+          <h2>{t("제품 선정·기술 문의 체크리스트")}</h2>
+          <p>
+            {t(
+              "전체 제품 · 한국어 · 개정 2026.10.26 · 장비·공정 조건 정리 양식",
+            )}
+          </p>
+        </div>
+        <span className="document-status">{t("다운로드 ↓")}</span>
+      </a>
+      <div className="grid gap-5 mt-10 md:grid-cols-2">
+        <article className="info-card">
+          <h2>{t("제품별 상세 자료")}</h2>
+          <p>
+            {t(
+              "상세 사양서, 도면, 소재별 평가 자료가 필요하시면 적용 제품과 사용 목적을 알려주세요. 제공 가능한 자료를 안내합니다.",
+            )}
+          </p>
+          {link("support-contact.html", "자료 요청", "btn-outline mt-5")}
+        </article>
+        <article className="info-card">
+          <h2>{t("인증자료")}</h2>
+          <p>
+            {t(
+              "회사 인증자료가 필요한 경우 문의해 주세요. 인증명과 유효기간을 확인한 자료를 안내합니다.",
+            )}
+          </p>
+          {link("support-contact.html", "인증자료 문의", "btn-outline mt-5")}
+        </article>
       </div>
-      {kind === "technical" ? (
-        <>
-          <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50/50 p-7">
-            <p className="eyebrow">PUBLIC REFERENCE</p>
-            <h3 className="mt-3 text-base font-semibold">
-              반도체 제조공정용 흡착패드 및 이의 탈부착방법
-            </h3>
-            <p className="mt-3 text-sm text-slate-500">
-              공개 특허 공보 · 등록번호 10-2849314
-            </p>
-            {external(sources.patent, "특허 원문 보기", "text-link mt-5")}
-          </div>
-        </>
-      ) : (
-        ""
+      {technical && (
+        <section className="detail-section">
+          <h2 className="content-title">{t("제품 선정 시 확인할 조건")}</h2>
+          <dl className="info-list">
+            {field(
+              "Ejector·Collet",
+              "칩 크기·두께, Bump 조건, 흡착 패턴, 장비 모델과 Motion",
+            )}
+            {field(
+              "Back Grind Parts",
+              "웨이퍼 규격, 장비 모델, P.C.D Hole, 냉각수 유입 위치",
+            )}
+            {field("Saw Kit", "패키지 크기·배열, 장비 구조, 흡착·이송 조건")}
+            {field(
+              "세라믹 부품",
+              "목표 온도와 주기, 접촉부 형상, 소재·표면저항 조건",
+            )}
+            {field("EMI Back Plate", "장비, 대응 Target, 재질·치수·체결 구조")}
+          </dl>
+        </section>
       )}
     </>
   );
 }
-
 export function PageContent({
   page,
   assetBase,
 }: {
   page: SitePage;
   assetBase: string;
-}): ReactNode {
-  if (/^product-[123]$/.test(page.id)) return product(page);
+}) {
+  const { t, company, products, categories } = useLocale();
+  const product = products.find((p) => page.id === `product-${p.id}`);
+  if (product) return <ProductDetail product={product} assetBase={assetBase} />;
   switch (page.id) {
     case "company-overview":
       return (
         <>
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr]">
-            <div>
-              <p className="eyebrow">FOUR LEAF CLOVER</p>
-              <h2 className="section-title mt-5">
-                반도체의 다음 단계,
-                <br />그 중심에 에프엘씨.
-              </h2>
-              <p className="mt-6 text-sm leading-8 text-slate-600">
-                에프엘씨는 반도체 후공정의 다이 본딩 장비와 부품, 부자재를
-                개발하는 기술 기업입니다. 현장 경험을 기반으로 고객별 제조
-                환경에 대응하는 솔루션과 국산화를 추구합니다.
-              </p>
-              <div className="mt-7">
-                {marker("경영이념 · 비전 · 대표 인사말")}
-              </div>
-            </div>
-            <dl className="info-list">
-              {field("회사명", company.name)}
-              {field("대표이사", company.representative)}
-              {field("설립일", company.established)}
-              {field("주요 사업", "반도체 장비 · 부품 · 부자재 개발 및 공급")}
-              {field("주소", company.address)}
-              {field("대표전화", telephone())}
-            </dl>
-          </div>
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {["장비 개발", "부품 · 부자재", "고객 맞춤형 솔루션"].map(
-              (title, i) => (
-                <Fragment key={title}>
-                  <article className="info-card">
-                    <span className="eyebrow">0{i + 1}</span>
-                    <h2 className="mt-4">{title}</h2>
-                    <p>
-                      {
-                        [
-                          "다이 본딩 공정에 대응하는 장비 기술",
-                          "고객의 제품과 공정에 필요한 부품",
-                          "다양한 제조 환경을 위한 통합 대응",
-                        ][i]
-                      }
-                    </p>
-                  </article>
-                </Fragment>
-              ),
+          <p className="eyebrow">FLC INC.</p>
+          <h2 className="section-title mt-4">
+            {t("고객의 공정 요구에 맞춰")}
+            <br />
+            {t("장비와 부품을 개발합니다.")}
+          </h2>
+          <p className="intro-copy mt-6">
+            {t(
+              "주식회사 에프엘씨는 2020년 설립된 반도체·디스플레이 장비 및 부품 개발 기업입니다. Die Bonder 장비와 공정용 Tool·Kit, 핵심 부자재를 중심으로 장비 개발과 부품 국산화, 고객 맞춤형 제작을 추진하고 있습니다.",
             )}
-          </div>
+          </p>
+          <dl className="info-list mt-10">
+            {field("회사명", "주식회사 에프엘씨 / FLC Inc.")}
+            {field("설립일", company.established)}
+            {field("대표자", company.representative)}
+            {field(
+              "사업 분야",
+              "반도체·디스플레이 장비, 부품·부자재 개발 및 제조",
+            )}
+            {field(
+              "주요 제품",
+              "Die Bonder / Ejector / Collet / Saw Kit / 세라믹 부품",
+            )}
+            {field("사업자번호", company.businessNumber)}
+            {field("대표 전화", telephone())}
+            {field("이메일", email())}
+            {field("소재지", company.address)}
+          </dl>
+          <section className="detail-section">
+            <h2 className="content-title">{t("개발·제조 역량")}</h2>
+            <Capabilities />
+          </section>
+          <section className="detail-section">
+            <h2 className="content-title">{t("경영 방향")}</h2>
+            <div className="grid gap-5 md:grid-cols-3">
+              {[
+                [
+                  "환경을 고려한 개발",
+                  "제품 개발 과정에서 환경과 자원 사용을 고려합니다.",
+                ],
+                ["사람과 함께 성장", "인재 육성과 공정한 거래를 지향합니다."],
+                [
+                  "책임 있는 경영",
+                  "전문성과 투명성을 갖춘 경영 체계를 지향합니다.",
+                ],
+              ].map(([title, desc]) => (
+                <article className="value-card" key={title}>
+                  <h3>{t(title)}</h3>
+                  <p className="mt-4 text-sm leading-7">{t(desc)}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+          <section className="detail-section">
+            <h2 className="content-title">{t("회사 연혁")}</h2>
+            <History />
+          </section>
+          <section className="detail-section">
+            <h2 className="content-title">{t("오시는길")}</h2>
+            <Location />
+          </section>
         </>
       );
     case "company-history":
-      return history();
+      return <History />;
     case "company-organization":
       return (
         <>
-          <div className="text-center">
-            <p className="eyebrow">OUR ORGANIZATION</p>
-            <h2 className="content-title mt-4">에프엘씨 조직도</h2>
-            <p className="mt-3 text-sm text-slate-500">
-              {marker("실제 부서 구성과 보고 체계")}
+          <p className="intro-copy mb-8">
+            {t(
+              "장비 설계, 공정 부품 개발, 제조·조립, 품질과 현장 대응을 연결해 고객의 공정 요구를 검토합니다.",
+            )}
+          </p>
+          <Capabilities />
+          <div className="info-card mt-8">
+            <h2>{t("고객 공정에서 시작하는 협업")}</h2>
+            <p>
+              {t(
+                "적용 장비와 제품 조건을 공유해 주시면 필요한 설계·평가 범위를 검토합니다. 개발 담당 분야 간 협업으로 부품과 장비의 연결 조건을 함께 확인합니다.",
+              )}
             </p>
-          </div>
-          <div className="org-chart">
-            <div className="org-leader">
-              <span>대표이사</span>
-              <strong>우중범</strong>
-            </div>
-            <div className="org-connector" aria-hidden="true"></div>
-            <div className="org-departments">
-              {[1, 2, 3].map((n) => (
-                <Fragment key={n}>
-                  <article>
-                    <span className="eyebrow">DEPARTMENT 0{n}</span>
-                    <h3>{marker("부서명")}</h3>
-                    <p>{marker("주요 업무 · 담당 역할")}</p>
-                  </article>
-                </Fragment>
-              ))}
-            </div>
-          </div>
-          <div className="editor-note">
-            {marker(
-              "조직도는 구성용 레이아웃이며, 실제 부서 수와 연결 관계에 맞춰 수정",
+            {link(
+              "technology-research.html",
+              "개발 절차 보기",
+              "btn-outline mt-5",
             )}
           </div>
         </>
       );
     case "company-location":
-      return location();
+      return <Location />;
     case "product-solutions":
+      return <ProductCatalog assetBase={assetBase} />;
+    case "product-1":
+    case "product-2":
+    case "product-3":
       return (
-        <>
-          <div className="max-w-3xl">
-            <p className="eyebrow">CUSTOMIZED FOR YOUR PROCESS</p>
-            <h2 className="section-title mt-5">
-              공정을 이해하고,
-              <br />
-              필요한 해답을 만듭니다.
-            </h2>
-            <p className="mt-6 text-sm leading-8 text-slate-600">
-              다이 본딩 공정에 필요한 장비와 부품, 부자재를 고객의 제품 및 공정
-              요구에 맞춰 개발·공급합니다. 제조 현장의 경험과 장비 기술을 연결해
-              다양한 반도체 제품에 대응하는 솔루션을 지향합니다.
-            </p>
-          </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {["장비 솔루션", "공정 부품 솔루션", "맞춤형 기술 대응"].map(
-              (title, i) => (
-                <Fragment key={title}>
-                  <article className="info-card">
-                    <span className="eyebrow">SOLUTION 0{i + 1}</span>
-                    <h2 className="mt-4">{title}</h2>
-                    <p>{marker("솔루션 상세 설명 · 적용 사례")}</p>
-                  </article>
-                </Fragment>
-              ),
-            )}
-          </div>
-          <div className="editor-note mt-8">
-            {marker("제공 범위 · 도입 절차 · 검증된 성과")}
-          </div>
-        </>
+        <ProductCatalog
+          key={page.id}
+          assetBase={assetBase}
+          initialCategory={categories[Number(page.id.slice(-1)) - 1]}
+        />
       );
     case "technology-core":
       return (
         <>
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div>
-              <p className="eyebrow">DIE BONDING</p>
-              <h2 className="section-title mt-5">
-                작은 칩 하나에도,
-                <br />
-                깊이 있는 기술.
-              </h2>
-              <p className="mt-6 text-sm leading-8 text-slate-600">
-                다이 본딩은 반도체 칩을 기판이나 다른 칩 위에 부착하는 패키징
-                공정입니다. 에프엘씨는 이 공정에 필요한 장비와 부품 기술에
-                집중합니다.
-              </p>
-              <div className="mt-7">
-                {marker("핵심기술의 차별성 · 적용 공정 · 정량 성능")}
-              </div>
-            </div>
-            <figure className="rounded-2xl bg-navy p-5">
-              <img
-                src={`${assetBase}wafer.svg`}
-                width="740"
-                height="660"
-                alt="다이 본딩 공정의 적층 칩 개념도"
-                className="blue-wafer"
-              />
-              <figcaption className="pb-4 text-center text-xs text-blue-100/70">
-                공정 이해를 위한 개념도 · 실제 제품 사양과 무관
-              </figcaption>
-            </figure>
-          </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {["공정에 대한 이해", "고객에 맞춘 개발", "지속적인 기술 연구"].map(
-              (title, i) => (
-                <Fragment key={title}>
-                  <article className="info-card">
-                    <span className="eyebrow">0{i + 1}</span>
-                    <h2 className="mt-4">{title}</h2>
-                    <p>{marker("세부 기술 설명")}</p>
-                  </article>
-                </Fragment>
-              ),
+          <p className="intro-copy mb-10">
+            {t(
+              "칩 분리와 픽업, 본딩, 부품 교체 과정의 요구사항을 분석하고 고객의 장비 환경에 맞는 구조와 사양을 개발합니다.",
             )}
+          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            {technologies.map(([title, desc, id], i) => (
+              <article className="info-card technology-card" key={id}>
+                <span className="eyebrow">TECHNOLOGY 0{i + 1}</span>
+                <img
+                  src={`${assetBase}products/${id}.png`}
+                  alt={products.find((p) => p.id === id)!.name}
+                  width="480"
+                  height="260"
+                  loading="lazy"
+                />
+                <h2>{t(title)}</h2>
+                <p>{t(desc)}</p>
+                <a className="text-link mt-6" href={`./product-${id}.html`}>
+                  {t("연결 제품 살펴보기 ↗")}
+                </a>
+              </article>
+            ))}
+          </div>
+          <div className="mt-10">
+            {link("technology-research.html", "맞춤형 개발·적용 사례 보기")}
           </div>
         </>
       );
     case "technology-research":
-      return (
-        <>
-          <div className="max-w-3xl">
-            <p className="eyebrow">RESEARCH & DEVELOPMENT</p>
-            <h2 className="section-title mt-5">
-              현장의 과제를,
-              <br />
-              기술의 진전으로.
-            </h2>
-            <p className="mt-6 text-sm leading-8 text-slate-600">
-              반도체 후공정 장비와 공정 부품의 연구개발을 통해 고객의 제조
-              환경에 필요한 기술을 준비합니다.
-            </p>
-          </div>
-          <article className="research-card mt-10">
-            <span className="eyebrow">PATENT / 10-2849314</span>
-            <h2 className="mt-5 text-xl font-semibold leading-relaxed">
-              반도체 제조공정용 흡착패드 및 이의 탈부착방법
-            </h2>
-            <dl className="info-list mt-6">
-              {field("출원일", "2024년 1월 10일")}
-              {field("등록일", "2025년 8월 25일")}
-              {field("출원인", company.name)}
-            </dl>
-            {external(sources.patent, "공개 특허 원문 확인", "text-link mt-5")}
-          </article>
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            <article className="info-card">
-              <h2>주요 연구 과제</h2>
-              <p>{marker("과제명 · 연구 기간 · 연구 내용")}</p>
-            </article>
-            <article className="info-card">
-              <h2>연구개발 성과</h2>
-              <p>{marker("보유 특허 · 인증 · 연구 실적")}</p>
-            </article>
-          </div>
-        </>
-      );
+      return <Development />;
     case "technology-resources":
-      return documentList("technical");
+      return <Resources assetBase={assetBase} technical />;
     case "support-downloads":
-      return documentList("downloads");
+      return <Resources assetBase={assetBase} />;
+    case "support-contact":
+      return <ContactPage />;
     case "support-notices":
       return (
-        <>
-          <div className="mb-8">
-            <p className="eyebrow">FLC NEWSROOM</p>
-            <h2 className="content-title mt-3">공지사항</h2>
-          </div>
-          <div className="notice-table">
-            <div className="notice-head">
-              <span>구분</span>
-              <span>제목</span>
-              <span>등록일</span>
-            </div>
-            <article className="notice-row">
-              <span className="notice-badge">공지</span>
-              <div>
-                <h3>{marker("공지 제목")}</h3>
-                <p className="mt-3 text-xs text-slate-500">
-                  {marker("공지 본문 · 첨부파일")}
-                </p>
-              </div>
-              <span className="text-xs">{marker("날짜")}</span>
-            </article>
-          </div>
-          <div className="editor-note mt-7">
-            {marker("게시할 공지사항 내용을 등록")}
-          </div>
-        </>
-      );
-    case "support-contact":
-      return (
-        <>
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div>
-              <p className="eyebrow">LET’S CONNECT</p>
-              <h2 className="section-title mt-5">
-                더 나은 공정을 향한
-                <br />
-                대화의 시작.
-              </h2>
-              <p className="mt-6 text-sm leading-8 text-slate-600">
-                제품 및 기술 관련 문의를 위한 연락처와 회사 정보를 안내합니다.
-              </p>
-              <dl className="info-list mt-8">
-                {field("이메일", email())}
-                {field("대표전화", telephone())}
-                {field("상담 가능 시간", marker("요일 · 운영 시간"))}
-              </dl>
-            </div>
-            <div className="contact-info-card">
-              <span className="contact-pin">{pin}</span>
-              <h2 className="mt-5 text-xl font-semibold">주식회사 에프엘씨</h2>
-              <p className="mt-5 text-sm leading-8" data-company-address="">
-                {company.address}
-              </p>
-              <p className="mt-3 text-sm text-slate-500">대표이사 우중범</p>
-              {link(
-                "company-location.html",
-                "오시는길 확인",
-                "btn-outline mt-8",
-              )}
-              <div className="mt-8">
-                {marker("문의 담당 부서 · 문의 시 필요한 정보")}
-              </div>
-            </div>
-          </div>
-        </>
+        <article className="info-card">
+          <h2>{t("제품 및 기술 안내")}</h2>
+          <p>
+            {t(
+              "제품 정보와 개발·공급 상태는 제품소개에서, 기술 상담은 문의하기에서 확인하실 수 있습니다.",
+            )}
+          </p>
+          {link("product-solutions.html", "제품소개", "btn-outline mt-5")}
+        </article>
       );
     case "careers-jobs":
       return (
-        <>
-          <div className="recruit-banner">
-            <p className="eyebrow text-sky-200">BUILD THE NEXT, TOGETHER</p>
-            <h2 className="mt-5 text-3xl font-semibold leading-relaxed text-white">
-              함께 만들어갈
-              <br />
-              반도체 기술의 내일.
-            </h2>
-          </div>
-          <h2 className="content-title mt-10">채용 공고</h2>
-          <article className="job-card">
-            <div>
-              <span className="eyebrow">RECRUITMENT</span>
-              <h3 className="mt-4 text-lg font-semibold">
-                {marker("채용 직무 · 공고 제목")}
-              </h3>
-              <p className="mt-4 text-sm">
-                {marker("경력 구분 · 고용 형태 · 접수 기간")}
-              </p>
-            </div>
-            <span className="text-sm text-slate-500">
-              {marker("모집 상태")}
-            </span>
-          </article>
-          <dl className="info-list mt-7">
-            {field("담당 업무", marker("업무 내용"))}
-            {field("지원 자격", marker("필수 요건 · 우대사항"))}
-            {field("지원 방법", marker("지원 이메일 또는 채용 페이지 주소"))}
-            {field("채용 절차", marker("전형 단계 및 안내"))}
-          </dl>
-        </>
+        <article className="info-card">
+          <h2>{t("채용 관련 문의")}</h2>
+          <p>
+            {t(
+              "채용 공고와 모집 직무에 관한 사항은 대표 이메일로 문의해 주세요.",
+            )}
+          </p>
+          <div className="mt-6">{email()}</div>
+        </article>
       );
     case "careers-values":
       return (
         <>
-          <div className="text-center">
-            <p className="eyebrow">PEOPLE AT FLC</p>
-            <h2 className="section-title mt-5">에프엘씨의 인재상</h2>
-            <p className="mt-5">{marker("인재상 소개 문구")}</p>
-          </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {[1, 2, 3].map((n) => (
-              <Fragment key={n}>
-                <article className="value-card">
-                  <span className="value-number">0{n}</span>
-                  <h3 className="mt-7">{marker("인재상 키워드")}</h3>
-                  <p className="mt-5 text-sm leading-7">
-                    {marker("핵심 가치 · 행동 기준")}
-                  </p>
-                </article>
-              </Fragment>
-            ))}
-          </div>
-          <div className="mt-10 info-card">
-            <h2>함께 일하는 문화</h2>
-            <p>{marker("조직 문화 · 성장 지원 · 복리후생")}</p>
+          <h2 className="content-title">{t("사람과 함께 성장하는 기술")}</h2>
+          <p className="intro-copy">
+            {t(
+              "에프엘씨는 장비·부품 개발 과정에서 분야 간 협업과 인재 육성을 지향합니다.",
+            )}
+          </p>
+          <div className="mt-8">
+            <Capabilities />
           </div>
         </>
       );
     default:
-      throw new Error(`Missing page template: ${page.id}`);
+      throw new Error(`Missing page: ${page.id}`);
   }
 }

@@ -1,0 +1,31 @@
+﻿FLC Product Selection & Technical Inquiry Checklist
+Revised: October 26, 2026
+Phone: +82-41-537-8115
+Email: semiclover@withflc.com
+
+CONTACT INFORMATION
+Company:
+Contact name:
+Reply email:
+Phone (optional):
+Inquiry type: Products & quotations / Technical consultation / Custom development / Other
+Product of interest:
+
+PROCESS CONDITIONS
+Equipment manufacturer and model:
+Application process:
+Die, wafer or package dimensions and thickness:
+Current issue:
+Target conditions:
+Required quantity:
+Preferred schedule:
+
+PRODUCT-SPECIFIC DETAILS
+Ejector / Collet: bump conditions, vacuum pattern, drive motion, contact material
+Back Grind Parts: wafer size, P.C.D holes, cooling water inlet position
+Saw Kit: package layout, equipment structure, vacuum and transfer conditions
+Ceramic Heater / P&P Tool: target temperature, heating/cooling cycle, contact geometry, material and surface resistance
+EMI Back Plate: equipment, target, material, dimensions, mounting structure
+
+Attach drawings, specifications or photos that you are able to share.
+Email the completed checklist directly to semiclover@withflc.com.

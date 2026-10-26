@@ -3,7 +3,7 @@ import type { Plugin } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
-import { pages } from "./src/navigation";
+import { routes } from "./src/navigation";
 
 function serveReactPages(): Plugin {
   return {
@@ -13,20 +13,21 @@ function serveReactPages(): Plugin {
       order: "pre",
       async handler(_html, context) {
         if (!context.server) return;
-        const page = pages.find(
+        const route = routes.find(
           (entry) =>
             normalizePath(resolve(import.meta.dirname, entry.file)) ===
             normalizePath(context.filename),
         );
-        if (!page) return;
+        if (!route) return;
         // Render current components on each dev request so refreshes stay in sync with HMR.
         const renderer = await context.server.ssrLoadModule(
           "/scripts/render.tsx",
         );
         return renderer.renderDocument(
-          page,
+          route.page,
           undefined,
-          context.server.config.base,
+          route.locale === "en" ? "../" : context.server.config.base,
+          route.locale,
         );
       },
     },
@@ -41,7 +42,10 @@ export default defineConfig({
     target: "es2022",
     rollupOptions: {
       input: Object.fromEntries(
-        pages.map((page) => [page.id, resolve(import.meta.dirname, page.file)]),
+        routes.map((route) => [
+          `${route.locale}-${route.page.id}`,
+          resolve(import.meta.dirname, route.file),
+        ]),
       ),
     },
   },

@@ -244,3 +244,151 @@
   .hero h1 span, .hero-description { color: #34445a; }
   .page-hero { padding-block: 24px; }
 }
+
+/* Product content extends the existing FLC blue/white layout. */
+@layer components {
+  .intro-copy { @apply text-sm leading-8 text-slate-600; max-width: 850px; }
+  .equipment-hero { @apply mx-0 my-8 h-[350px] sm:h-[440px] lg:my-10; }
+  .equipment-hero .equipment-image { @apply absolute inset-x-0 top-12 bottom-16 overflow-hidden rounded-xl bg-white; }
+  .equipment-hero img { position: static; width: 100%; height: 100%; max-width: 100%; padding: 20px; object-fit: contain; transform: none; filter: none; }
+  .equipment-hero .visual-top { @apply top-0 right-0 left-0; }
+  .equipment-hero figcaption { @apply right-0 bottom-0 left-0 flex flex-wrap items-center justify-between gap-3 text-xs text-blue-100; }
+  .equipment-hero figcaption strong { @apply text-xl tracking-wider text-white; }
+  .business-card { @apply rounded-xl border border-slate-200 p-6 hover:border-blue-300; }
+  .business-top { @apply flex items-center justify-between text-xs text-brand; }
+  .business-card img { @apply my-6 h-40 w-full object-contain; }
+  .business-card h3 { @apply text-xl font-semibold; }
+  .business-card p { @apply mt-4 text-sm leading-7 text-slate-500; }
+  .catalog-grid { @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3; }
+  .featured-grid { @apply grid gap-5 md:grid-cols-2 xl:grid-cols-4; }
+  .catalog-card { @apply flex min-w-0 flex-col; }
+  .catalog-card .product-visual { @apply h-56 bg-white p-6; }
+  .catalog-card .product-visual img { @apply h-full w-full object-contain transition-transform duration-300; }
+  .catalog-card:hover .product-visual img { transform: scale(1.03); }
+  .catalog-card-copy { @apply flex grow flex-col p-6; }
+  .catalog-card-copy h2 { @apply mt-5 text-lg leading-7 font-semibold; }
+  .catalog-summary { @apply mt-3 text-xs leading-6 text-slate-500; }
+  .process-tags { @apply mt-5 mb-6 text-[10px] leading-5 text-brand; }
+  .card-actions { @apply mt-auto flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-5 text-xs; }
+  .card-actions a { @apply flex items-center gap-2 text-brand; }
+  .card-actions svg { @apply h-3 w-3; }
+  .status-badge { @apply inline-flex rounded-full px-2.5 py-1 text-[10px] leading-4 font-medium; }
+  .status-badge.production { @apply bg-emerald-50 text-emerald-800; }
+  .status-badge.development { @apply bg-blue-50 text-blue-800; }
+  .status-badge.evaluation { @apply bg-amber-50 text-amber-800; }
+  .status-badge.consult { @apply bg-slate-100 text-slate-600; }
+  .source-note { @apply mt-6 text-[11px] leading-6 text-slate-500; }
+  .catalog-controls { @apply mt-9 mb-7 rounded-xl border border-slate-200 bg-mist p-5 sm:p-6; }
+  .category-filters { @apply flex flex-wrap gap-2; }
+  .category-filters button { @apply rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs; }
+  .category-filters button[aria-pressed='true'] { @apply border-brand bg-brand text-white; }
+  .search-controls { @apply mt-5 grid items-end gap-4 sm:grid-cols-[1fr_2fr_auto]; }
+  .search-controls label, .inquiry-form label { @apply block min-w-0 text-xs font-medium; }
+  .search-controls input, .search-controls select, .inquiry-form input:not([type='checkbox']), .inquiry-form select, .inquiry-form textarea, .email-draft textarea { @apply mt-2 block w-full min-w-0 rounded-md border border-slate-300 bg-white px-3 py-3 text-sm text-ink outline-offset-2 focus:outline-brand; }
+  .reset-button { @apply rounded-md border border-slate-300 bg-white px-4 py-3 text-xs; }
+  .catalog-meta { @apply mb-6 flex flex-wrap justify-between gap-3 text-xs text-slate-500; }
+  .catalog-meta strong { @apply text-brand; }
+  .empty-results { @apply rounded-xl bg-mist px-5 py-16 text-center; }
+  .empty-results h2 { @apply text-lg font-semibold; }
+  .empty-results p { @apply mt-3 mb-6 text-sm text-slate-500; }
+  .product-detail-grid { @apply grid items-start gap-10 lg:grid-cols-2; }
+  .detail-image { @apply overflow-hidden rounded-xl border border-slate-200 bg-white; }
+  .detail-image img { @apply h-[320px] w-full object-contain p-8 sm:h-[420px]; }
+  .detail-image figcaption { @apply border-t border-slate-100 bg-mist px-6 py-4 text-[11px] leading-6 text-slate-500; }
+  .detail-title { @apply mt-5 mb-5 text-2xl leading-relaxed font-semibold tracking-tight; }
+  .detail-jumps { @apply mt-12 flex flex-wrap gap-5 border-y border-slate-200 py-5 text-xs font-medium text-brand; }
+  .detail-section { @apply mt-14; }
+  .feature-grid { @apply grid gap-4 sm:grid-cols-2; }
+  .feature-item { @apply flex items-center gap-5 rounded-lg bg-mist p-5; }
+  .feature-item span { @apply font-mono text-xs text-brand; }
+  .feature-item h3 { @apply text-sm leading-7 font-medium; }
+  .spec-note { @apply mt-6 rounded-lg border-l-2 border-blue-300 bg-blue-50/60 px-5 py-4 text-xs leading-7 text-slate-600; }
+  .company-facts { @apply rounded-xl bg-mist px-8; }
+  .company-facts div { @apply border-b border-slate-200 py-7 last:border-0; }
+  .company-facts span { @apply block text-[10px] tracking-widest text-brand; }
+  .company-facts strong { @apply mt-3 block text-xl font-semibold; }
+  .technology-card img { @apply my-6 h-52 w-full bg-white object-contain p-5; }
+  .development-steps { @apply mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-5; }
+  .development-steps li { @apply rounded-xl border border-slate-200 p-5; }
+  .development-steps span { @apply font-mono text-2xl text-blue-300; }
+  .development-steps h3 { @apply mt-5 text-sm font-semibold; }
+  .development-steps p { @apply mt-3 text-xs leading-7 text-slate-500; }
+  .case-card h3 { @apply text-lg font-semibold; }
+  .case-card dt { @apply mt-5 text-[10px] font-semibold text-brand; }
+  .case-card dd { @apply mt-1 text-xs leading-7 text-slate-600; }
+  .roadmap { @apply mt-8 grid gap-5 md:grid-cols-2; }
+  .roadmap article { @apply rounded-lg bg-mist p-6; }
+  .roadmap span { @apply text-xs text-brand; }
+  .roadmap h3 { @apply mt-3 text-lg font-semibold; }
+  .roadmap p { @apply mt-4 text-xs leading-7 text-slate-500; }
+  .contact-layout { @apply grid items-start gap-10 lg:grid-cols-[1.65fr_1fr]; }
+  .inquiry-form { @apply mt-8; }
+  .form-grid { @apply grid gap-5 sm:grid-cols-2; }
+  .form-grid .full-width { @apply sm:col-span-2; }
+  .inquiry-form label>span { @apply text-slate-500; }
+  .form-help { @apply mt-3 text-[11px] leading-6 text-slate-500; }
+  .privacy-note { @apply mt-6 rounded-lg bg-mist p-4 text-xs leading-7; }
+  .privacy-note p { @apply mt-3 text-slate-600; }
+  .inquiry-form .consent { @apply my-6 flex items-start gap-3 leading-6; }
+  .consent input { @apply mt-1 h-4 w-4 shrink-0 accent-brand; }
+  .contact-details { @apply mt-8; }
+  .contact-details dt { @apply mt-6 text-[11px] text-slate-500; }
+  .contact-details dd { @apply mt-2 mb-5 text-sm leading-7; overflow-wrap: anywhere; }
+  .contact-checklist { @apply mt-8 border-t border-slate-200 pt-6; }
+  .contact-checklist h3 { @apply text-sm font-semibold; }
+  .contact-checklist ul { @apply mt-4 list-inside list-disc text-xs leading-8 text-slate-500; }
+  .email-draft { @apply mt-8 rounded-xl border border-blue-200 bg-blue-50 p-6; }
+  .email-draft h3 { @apply font-semibold; }
+  .email-draft p { @apply my-4 text-xs leading-7; }
+  .email-draft details { @apply mt-5 text-xs; }
+  .document-row h2 { @apply text-sm font-semibold; }
+}
+.interactive-only { display: none; }
+.js .interactive-only { display: block; }
+.info-row dd, .document-row, .page-hero h1, .timeline-year { overflow-wrap: anywhere; min-width: 0; }
+.section-nav .shell { flex-wrap: wrap; }
+@media (max-width: 639px) {
+  .document-row { flex-wrap: wrap; }
+  .document-row>div { flex: 1; min-width: 0; }
+  .document-status { width: 100%; padding-left: 0; }
+  .timeline-year { font-size: 22px; }
+  .equipment-hero .equipment-image { bottom: 80px; }
+  .equipment-hero figcaption { display: block; }
+  .equipment-hero figcaption span { display: block; margin-top: 8px; }
+}
+
+/* Language controls remain available even when the mobile menu is closed. */
+.header-actions { display: flex; align-items: center; gap: 14px; }
+.language-switch { display: flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 11px; font-weight: 600; }
+.language-switch a { display: inline-flex; min-width: 36px; min-height: 36px; align-items: center; justify-content: center; border-radius: 5px; color: #64748b; }
+.language-switch a[aria-current] { color: #0866be; background: #eef6ff; }
+.language-switch a:hover { background: #eef6ff; }
+.language-switch>span { color: #cbd5e1; }
+html[lang='en'] h1, html[lang='en'] h2, html[lang='en'] h3, html[lang='en'] p { word-break: normal; overflow-wrap: break-word; }
+html[lang='en'] .hero h1 { font-size: clamp(32px, 3.1vw, 44px); line-height: 1.2; letter-spacing: -.035em; }
+html[lang='en'] .nav-dropdown { width: 260px; }
+html[lang='en'] .info-row { grid-template-columns: minmax(95px, 140px) minmax(0, 1fr); }
+html[lang='en'] .business-card h3 { min-height: 56px; }
+html[lang='en'] .status-badge { line-height: 1.5; }
+html[lang='en'] .section-nav a { white-space: normal; flex-shrink: 1; }
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .header-inner { gap: 10px; }
+  #main-nav { gap: 0; }
+  .nav-home, .nav-group summary { padding-inline: 8px; }
+  .header-contact { display: none; }
+}
+@media (max-width: 1023px) {
+  .header-inner { gap: 8px; }
+  .brand { order: 0; }
+  .header-actions { order: 1; margin-left: auto; }
+  .menu-toggle { order: 2; }
+  #main-nav { order: 3; }
+  html[lang='en'] .js .nav-dropdown { width: 100%; }
+}
+@media (max-width: 359px) {
+  .header-inner { padding-inline: 18px; }
+  .language-switch a { min-width: 32px; }
+  html[lang='en'] .info-row { grid-template-columns: 85px minmax(0,1fr); gap: 12px; }
+}
+
+@media (min-width: 1024px) { html[lang="en"] .hero-inner { column-gap: 32px; } }

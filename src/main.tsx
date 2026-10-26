@@ -8,12 +8,18 @@ if (!root) throw new Error("Missing React root. Run npm run generate first.");
 const page = pages.find((entry) => entry.id === root.dataset.page);
 const initialYear = Number(root.dataset.year);
 const assetBase = root.dataset.assetBase ?? "./";
+const locale = root.dataset.locale === "en" ? "en" : "ko";
 if (!page || !Number.isInteger(initialYear))
   throw new Error("Invalid page metadata.");
 
 hydrateRoot(
   root,
   <StrictMode>
-    <App page={page} initialYear={initialYear} assetBase={assetBase} />
+    <App
+      page={page}
+      initialYear={initialYear}
+      assetBase={assetBase}
+      locale={locale}
+    />
   </StrictMode>,
 );

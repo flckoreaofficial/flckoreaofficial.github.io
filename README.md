@@ -1,126 +1,114 @@
-# FLC 회사 홈페이지
+﻿# FLC 회사 홈페이지
 
-**React 19 + TypeScript + Vite + Tailwind CSS 4**로 만든 읽기 전용 회사 홈페이지입니다. React 컴포넌트에서 **17개의 정적 HTML 페이지**를 미리 생성하고, 브라우저에서는 `hydrateRoot`로 React 이벤트를 연결합니다. 배포 후 실행할 서버·데이터베이스·API 키가 필요 없으며, GitHub Pages에서 각 페이지의 직접 접속·새로고침과 JavaScript 비활성 상태를 지원합니다.
+React 19 + TypeScript + Vite + Tailwind CSS 4로 구현한 정적 B2B 기업 홈페이지입니다. 기존 17개 페이지의 주소와 공통 디자인을 활용하고 제품 상세 11개를 추가해 한국어 28개와 영어 28개, 총 56개 HTML 페이지를 생성합니다. GitHub Pages의 하위 경로와 JavaScript 비활성 환경에서 회사·제품 본문을 열람할 수 있습니다.
 
-- 저장소: https://github.com/flckoreaofficial/flckoreaofficial.github.io
-- 배포 주소: https://flckoreaofficial.github.io/
-- 공식 로고: 루트의 `FLC.png` 원본 사용
-- 주소: **충남 천안시 서북구 직산읍 금곡로 74-10, (주)에프엘씨**
-- 미제공 정보는 사용자 요청에 따라 화면에 **`@@수정필요@@`**로 표시
-- 출처 및 확정 여부: [CONTENT_SOURCES.md](./CONTENT_SOURCES.md)
+## 실행
 
-## 실행 및 빌드
-
-Node.js **22.12 이상**을 사용합니다. 로컬 HTML 파일을 더블클릭하지 말고 아래 서버로 확인하세요.
+Node.js 22.12 이상에서 실행합니다. Windows PowerShell의 실행 정책에 따라 `npm` 대신 `npm.cmd`를 사용할 수 있습니다.
 
 ```sh
 npm ci
 npm run dev
+npm run build
+npm run preview
 ```
 
-기본 주소는 `http://127.0.0.1:5173`입니다. `predev` 단계에서 페이지를 자동 생성합니다.
+개발 서버 기본 주소는 http://127.0.0.1:5173 입니다. HTML을 더블클릭하지 말고 로컬 서버로 확인하세요. `dev`·`build` 전에 React 본문과 사이트맵을 자동 생성합니다.
+
+## 화면 구성
+
+- 회사소개: 회사개요, 연혁, 개발·제조 역량, 오시는길. 회사개요에서도 각 내용을 요약·연결합니다.
+- 제품소개: 전체 제품과 반도체 장비 / 공정 부품·툴 / 세라믹·소재 부품. 제품명·모델 검색과 공정 필터를 제공합니다.
+- 제품 상세: 11개 제품의 원본 이미지, 특징, 공정, 사양, 개발·공급 상태, 맞춤 제작, 자료, 문의 링크.
+- 기술·개발: 핵심기술, 맞춤형 개발 절차, 적용 검토 사례, 개발 목표 로드맵.
+- 자료실: 회사·제품 안내 PDF와 기술 문의 체크리스트, 상세 자료 요청.
+- 문의하기: 관심 제품 자동 선택과 이메일 초안 작성.
+
+`product-1.html` / `product-2.html` / `product-3.html`은 제품 분류로, `product-solutions.html`은 전체 제품 목록으로 사용합니다. 제품 상세는 `product-zsd-1.html` 등의 독립 주소입니다. 공지·채용의 기존 URL은 안내 화면으로 유지하고 상단 메뉴에서는 제외했습니다.
+
+## 문의 방식
+
+현재는 별도 서버·메일 전송 API가 없는 정적 사이트입니다. 문의 양식은 브라우저에서 이메일 초안을 생성하며 **서버에 저장하거나 자동 발송하지 않습니다**. 사용자가 이메일 앱에서 확인 후 직접 전송합니다. 도면·사양서·사진도 이메일 앱에서 첨부합니다. 이메일 앱을 사용할 수 없으면 생성된 본문을 복사할 수 있습니다. 입력 변경 시 오래된 초안을 지웁니다.
+
+관심 제품은 `support-contact.html?product=thin-die-ejector`와 같이 제품 ID로 전달합니다. 잘못된 ID는 미정으로 처리합니다. JavaScript가 없을 때도 전화·이메일 연락처는 표시됩니다.
+
+## 원본 수정
+
+루트 HTML은 생성 결과이므로 직접 편집하지 마세요.
+
+| 파일 | 역할 |
+| --- | --- |
+| `src/company.ts` | 회사명, 연락처, 확정 주소, 도메인 |
+| `src/products.ts` | 11개 제품의 내용·사양·상태·출처 페이지 |
+| `src/navigation.ts` | 메뉴, 기존·신규 페이지 목록 |
+| `src/pages/HomePage.tsx` | 메인 화면 |
+| `src/pages/PageContent.tsx` | 회사·기술·자료실 등 본문 |
+| `src/pages/Products.tsx` | 검색·필터·제품 카드·상세 |
+| `src/pages/ContactPage.tsx` | 이메일 문의 초안 |
+| `src/style.css` | 기존 테마와 반응형 스타일 |
+| `public/products/` | PDF에서 추출한 이미지 11개 |
+| `public/downloads/` | 실제 배포하는 안내서·체크리스트 |
+
+자료 기준과 제외한 수치는 [CONTENT_SOURCES.md](./CONTENT_SOURCES.md)에 기록했습니다. 원본 PDF는 배포 파일에 포함하지 않습니다.
+
+## 제품 이미지와 안내서 갱신
+
+제품 내용 수정 후 PDF도 재생성하고 사이트를 빌드하세요. 안내서 생성은 설치된 Edge를 기본으로 사용합니다. 다른 Playwright 브라우저는 `PLAYWRIGHT_CHANNEL` 환경변수로 지정할 수 있습니다.
 
 ```sh
-npm run generate   # React 컴포넌트 → 17개 HTML + sitemap.xml + 로고 복사
-npm run check      # 앱·생성 스크립트·Vite 설정·테스트 TypeScript 검사
-npm run build      # React 페이지 사전 생성 + 타입 검사 + Tailwind/Vite 빌드
-npm run preview    # dist/의 실제 배포 결과 확인
+npx tsx scripts/generate-guide.ts
+npm run build
 ```
 
-개발 서버는 React Fast Refresh를 지원하며 컴포넌트와 CSS 수정을 즉시 반영합니다. 브라우저에서 새로고침할 때도 최신 React 컴포넌트로 HTML을 생성하므로 변경 전 HTML과 충돌하지 않습니다. 페이지 추가·파일명 변경·로고 원본 교체 후에는 `npm run generate`를 실행하고 개발 서버를 재시작하세요.
+PDF 이미지 재추출은 PyMuPDF가 있는 Python 환경에서 실행합니다. 별도의 원본 파일 경로가 필요하며, 일반 사이트 빌드에는 Python이 필요하지 않습니다.
 
-React Router의 SPA 경로 대신 기존 `.html` 주소를 유지합니다. 페이지 이동은 일반 링크로 처리하고, 메뉴·주소 복사는 React의 `useState`, `useRef`, 이벤트 핸들러로 관리합니다. GitHub Pages에 별도 경로 재작성이나 404 우회 설정이 필요하지 않습니다.
+```sh
+python scripts/extract-products.py "원본 PDF 경로"
+```
 
-## 메뉴 구조
-
-| 상위 메뉴 | 하위 메뉴 | 페이지 파일 |
-| --- | --- | --- |
-| 홈 | — | `index.html` |
-| 회사소개 | 회사개요 / 회사연혁 / 조직도 / 오시는길 | `company-overview.html` / `company-history.html` / `company-organization.html` / `company-location.html` |
-| 제품/솔루션 | 제품1 / 제품2 / 제품3 / 기술/솔루션 | `product-1.html` / `product-2.html` / `product-3.html` / `product-solutions.html` |
-| 기술 | 핵심기술 / 연구개발 / 기술자료 | `technology-core.html` / `technology-research.html` / `technology-resources.html` |
-| 고객지원 | 공지사항 / 자료실 / 문의하기 | `support-notices.html` / `support-downloads.html` / `support-contact.html` |
-| 채용 | 채용정보 / 인재상 | `careers-jobs.html` / `careers-values.html` |
-
-PC에서는 상위 메뉴를 클릭하거나 Enter/Space로 하위 메뉴를 엽니다. 모바일에서는 메뉴 버튼과 상위 메뉴를 순서대로 누릅니다. Escape는 열린 하위 메뉴부터 닫으며, 바깥 영역 클릭과 화면 크기 변경도 처리합니다.
-
-## 내용을 채우는 방법
-
-**루트의 HTML 파일은 생성 결과입니다. 직접 수정하면 다음 생성 시 덮어써집니다.** 아래 원본 파일을 수정한 다음 `npm run generate` 또는 `npm run build`를 실행하세요.
-
-| 원본 파일 | 수정 항목 |
-| --- | --- |
-| `src/company.ts` | 회사명, 대표, 설립일, 주소, 이메일, 대표전화, 배포 도메인 |
-| `src/navigation.ts` | 상위·하위 메뉴명, 페이지명, 영문 제목, 소개 문구 |
-| `src/App.tsx` | 공통 레이아웃, 홈/하위 페이지 선택, 하위 메뉴 |
-| `src/pages/HomePage.tsx` | 홈 화면 및 제품 소개 카드 |
-| `src/pages/PageContent.tsx` | 회사·제품·기술·고객지원·채용 페이지 본문 |
-| `src/components/Header.tsx` | 공통 헤더, React 상태로 관리하는 모바일 메뉴와 드롭다운 |
-| `src/components/Footer.tsx` | 공통 푸터, 연도, 출처 |
-| `src/components/AddressCopy.tsx` | 주소 복사 및 권한 차단 시 수동 복사 안내 |
-| `src/components/content.tsx`, `icons.tsx` | 공통 JSX 요소, 수정 표시, 링크, 아이콘 |
-| `src/style.css` | Tailwind 테마, 블루 색상, 반응형 레이아웃, 컴포넌트 스타일 |
-| `src/main.tsx` | 현재 페이지 정보를 읽어 React를 사전 생성된 HTML에 연결 |
-| `FLC.png` | 공식 회사 로고. 생성 시 `public/flc-logo.png`로 원본 그대로 복사 |
-| `public/wafer.svg` | 반도체 패키징 개념 일러스트 |
-| `scripts/render.tsx` | React 서버 렌더링으로 HTML 문서 및 메타정보 생성 (빌드·개발 전용) |
-| `scripts/generate.tsx` | 17개 HTML·sitemap 생성, 로고 복사 |
-| `vite.config.ts` | React·Tailwind 플러그인, 개발 중 HTML 생성, 다중 페이지 빌드 |
-
-페이지 컴포넌트의 `marker('입력 항목')`은 화면에 `@@수정필요@@`와 항목 설명을 표시합니다. 확정 정보가 생기면 해당 호출을 실제 텍스트나 JSX 컴포넌트로 교체합니다. 공식 제품명을 넣을 때는 `src/navigation.ts`의 메뉴명도 같이 변경하세요. 생성된 HTML의 `#root` 내용은 React와 일치해야 하므로 HTML 결과물을 수동 편집하거나 포맷하지 마세요.
-
-`src/company.ts`에 이메일·전화번호를 입력하면 문의 페이지와 관련 정보에 실제 `mailto:`·`tel:` 링크가 생성됩니다. 문의 폼이나 서버 전송 기능은 없으며, 연락처를 통한 문의 안내 구조입니다. 자료 파일은 `public/downloads/` 등에 추가하고 실제 파일이 생긴 뒤 다운로드 링크를 연결하세요.
-
-## @@수정필요@@ 항목
-
-| 영역 | 추가할 정보 |
-| --- | --- |
-| 회사개요 | 경영이념, 비전, 대표 인사말, 대표전화 |
-| 회사연혁 | 추가 연도와 성과 |
-| 조직도 | 실제 부서 수, 부서명, 보고 체계, 담당 업무 |
-| 오시는길 | 대중교통, 차량 진입·주차·방문 절차 |
-| 제품1~3 | 제품명, 모델명, 사진, 개요, 적용 분야, 특장점, 사양, 자료 |
-| 기술/솔루션 | 상세 솔루션, 적용 사례, 제공 범위, 도입 절차 |
-| 핵심기술·연구개발 | 차별성, 성능, 과제, 실적, 특허·인증 추가 정보 |
-| 기술자료·자료실 | 문서명, 실제 파일, 등록일 |
-| 공지사항 | 제목, 본문, 날짜, 첨부파일 |
-| 문의하기 | 이메일, 대표전화, 상담시간, 담당 부서 |
-| 채용정보 | 모집 직무, 업무, 요건, 기간, 전형, 지원 방법 |
-| 인재상 | 키워드, 가치와 행동 기준, 조직문화, 복리후생 |
-
-조직도와 채용 등은 구성용 레이아웃입니다. 임의의 부서·채용 상태·제품 사양을 실제 정보로 기재하지 않았습니다. 다운로드 파일이 없는 항목에는 동작하지 않는 다운로드 버튼을 만들지 않았습니다.
-
-## GitHub Pages 배포
-
-1. 소스, `FLC.png`, 생성된 HTML, `package-lock.json`, `.github/workflows/deploy.yml`을 `main` 브랜치에 올립니다. `node_modules/`, `dist/`, `test-results/`는 제외됩니다.
-2. 저장소 **Settings → Pages → Build and deployment → Source → GitHub Actions**로 설정합니다.
-3. `main`에 push하면 자동으로 빌드·배포됩니다. 수동 재실행은 **Actions → Deploy FLC to GitHub Pages → Run workflow**를 사용합니다.
-4. Actions가 성공하면 https://flckoreaofficial.github.io/ 를 확인합니다.
-
-GitHub Free의 무료 Pages를 이용하려면 Public 저장소를 사용합니다. 별도 API 키나 개인 액세스 토큰을 코드에 넣지 않습니다.
-
-모든 내부 링크와 빌드 자원은 상대 경로라 저장소 하위 경로에서도 작동합니다. 도메인을 바꾸면 `src/company.ts`의 `siteUrl`과 `public/robots.txt`를 수정하세요. canonical·og:url·sitemap은 페이지 생성 시 반영됩니다.
-
-설정 참고: [Tailwind Vite 설치](https://tailwindcss.com/docs/installation/using-vite), [GitHub Pages 설정](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+추출 스크립트는 PDF의 제품 이미지와 투명도를 보존합니다. Saw Kit는 구성품 번호를 포함한 원본 도면 영역을 사용합니다. 공식 로고는 기존 `FLC.png`를 그대로 유지합니다.
 
 ## 검증
 
 ```sh
-npx playwright install chromium
+npm run check
 npm run test:e2e
 npm run test:dev
 ```
 
-Windows에 설치된 Edge로 실행할 때:
+Windows Edge:
 
 ```powershell
 $env:PLAYWRIGHT_CHANNEL = 'msedge'
-npm run test:e2e
-npm run test:dev
+npm.cmd run test:e2e -- --workers=2
+npm.cmd run test:dev
 ```
 
-실제 빌드를 `/flc-preview/` 하위 경로에서 실행합니다. 17개 페이지의 직접 접속 및 React hydration 오류, PC·모바일 메뉴, 키보드 탐색, 주소 복사와 권한 차단 시 대체 동작, 지도 링크, 320px 화면, 로고·자원 로딩, JavaScript 비활성 상태를 검증합니다. 스크린샷은 `test-results/`에 생성됩니다.
+테스트는 한국어·영어 56개 페이지 직접 접속, React 연결, PC·모바일 메뉴, 320px 화면, 제품 필터·검색, 문의 제품 선택과 이메일 초안, 실제 다운로드, 주소 복사, JavaScript 비활성 열람을 검증합니다. 스크린샷은 `test-results/`에 저장합니다.
 
-Google Fonts의 Noto Sans KR을 사용하며, 연결이 안 되면 시스템 글꼴로 표시됩니다. Tailwind CSS는 빌드에 포함되므로 CDN 접속이나 런타임 Tailwind 로더가 필요하지 않습니다.
+## 기존 GitHub Pages 배포
 
-`test:dev`는 개발 서버의 React 연결과 새로고침을 검사합니다. 생성된 HTML에 임시로 이전 내용이 남아 있어도 최신 컴포넌트로 응답하는지 확인하며, 이 과정에서 사용한 생성 파일은 검사 후 복원합니다.
+- 저장소: https://github.com/flckoreaofficial/flckoreaofficial.github.io
+- 기존 배포 주소: https://flckoreaofficial.github.io/
+- `.github/workflows/deploy.yml`의 GitHub Actions 배포 구성을 유지합니다.
+- Pages 설정은 Source를 GitHub Actions로 지정합니다. `main`에 소스를 push하면 기존 워크플로가 빌드·배포합니다.
+- `node_modules`, `dist`, `test-results`, `.work`, `.tmp-tools`는 저장소에서 제외합니다.
+
+이번 작업은 로컬 소스와 빌드 결과를 수정하며 원격 push나 운영 배포는 수행하지 않습니다. 상대경로 링크와 자원을 유지하므로 저장소 하위 경로 배포도 지원합니다. 도메인을 변경하면 `src/company.ts`와 `public/robots.txt`를 함께 수정하세요.
+
+## 한국어 / 영어
+
+헤더의 KOR / ENG 링크로 같은 페이지의 언어를 바꿉니다. 한국어는 기존 루트 URL, 영어는 `en/`의 동일 파일명을 사용합니다. 예: `/product-zsd-1.html` ↔ `/en/product-zsd-1.html`. 문의 제품의 쿼리 문자열과 페이지 내 위치도 JavaScript 연결 후 유지합니다. 모바일 메뉴가 닫혀 있어도 언어 선택은 항상 보입니다.
+
+언어는 URL로 결정합니다. 브라우저 언어나 저장 설정에 따라 강제로 이동하지 않습니다. 각 언어의 HTML을 미리 생성하므로 JavaScript 없이도 본문을 읽고 언어를 바꿀 수 있습니다. 제목, 설명, `lang`, Open Graph locale, canonical, hreflang과 사이트맵도 언어별로 생성합니다.
+
+- `src/locales/en.ts`: 한국어 원문과 영어 번역 매핑
+- `src/i18n.ts`: 텍스트·구조화 데이터 번역과 언어 경로 함수
+- `src/LocaleContext.tsx`: 공유 컴포넌트의 현재 언어와 제품·회사 데이터
+- `src/components/LanguageSwitch.tsx`: 페이지·쿼리·해시를 유지하는 언어 링크
+- `src/companyContent.ts`: 양 언어에서 공유하는 회사·기술 콘텐츠
+- `en/*.html`: 생성된 영어 페이지. 직접 수정하지 마세요.
+
+한국어 원문을 수정하면 대응하는 영어 번역도 갱신하세요. 새 제품과 페이지는 언어별로 함께 생성됩니다. 영어 전화는 `+82-41-537-8115`, 주소와 대표자명은 영문으로 표시합니다. 영어 문의 양식은 영어 제목·본문의 이메일 초안을 만듭니다.
+
+`npx tsx scripts/generate-guide.ts`는 한국어·영어 안내서를 함께 생성합니다. 영문 자료는 `flc-product-guide-en.pdf` 및 `flc-selection-guide-en.txt`입니다. 일반 CI 빌드는 저장된 파일을 복사하므로 PDF 생성용 브라우저는 배포 서버에 필요하지 않습니다.
